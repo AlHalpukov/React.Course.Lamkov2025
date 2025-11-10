@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import AddTaskForm from "./AddTaskForm";
+import Button from "./Button";
 import SearchTaskForm from "./SearchTaskForm";
 import TodoInfo from "./TodoInfo";
 import TodoList from "./TodoList";
-import Button from "./Button";
 
 const Todo = () => {
   const [tasks, setTasks] = useState(() => {
@@ -30,13 +30,7 @@ const Todo = () => {
   }, [tasks]);
 
   useEffect(() => {
-    console.log("Ref -> ", newTaskInputRef);
-
     newTaskInputRef.current?.focus();
-
-    // вот тут не работает так как задумано, т.к. метод focus вызывается
-    // на еще не отрисованном компоненте
-    // TODO нужно разобраться
   }, []);
 
   const deleteAllTasks = () => {
@@ -53,7 +47,7 @@ const Todo = () => {
   const toggleTaskComplete = (taskId, isDone) => {
     setTasks(
       tasks.map((task) => {
-        if ((task.id = taskId)) {
+        if (task.id === taskId) {
           return { ...task, isDone };
         }
         return task;
@@ -73,19 +67,26 @@ const Todo = () => {
     if (newTaskTitle.trim().length > 0) {
       const newTask = {
         // id: "task-" + (tasks.length + 1),
-        // id: v4() ?? Date.now().toString(),
+        // id: uuidv4() ?? Date.now().toString(),
         // вместо crypto можно использовать библиотеку uuid и ее метод v4()
         // для генерации Guid
-        id: crypto.randomUUID() ?? Date.now().toString(),
+        id: crypto.randomUUID(),
+        //  ?? Date.now().toString(),
         // не сработал метод глобальный объект крипто в яндекс браузере
         // нужно попробовать в другом, и почитать вообще про него
         // так, как-то получилось, что он сработал, почему то )
+        // и опять, что-то не работает с crypto, он генерирует одинаковый id при одинаковом
+        // наименовании задачи
+        // поэтому вернулся к библиотеке uuid
+
+        //  все заработало, ошибка оказалось в другом месте
         title: newTaskTitle,
         isDone: false,
       };
       setTasks([...tasks, newTask]);
       setNewTaskTitle("");
       setSearchQuery("");
+      newTaskInputRef.current?.focus();
     }
   };
 
@@ -109,7 +110,7 @@ const Todo = () => {
       />
       <Button
         onClick={() => {
-          firstIncompleteTaskRef.current?.scroll.IntoView({
+          firstIncompleteTaskRef.current?.scrollIntoView({
             behavior: "smooth",
           });
         }}
