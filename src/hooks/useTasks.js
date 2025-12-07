@@ -62,32 +62,30 @@ const useTasks = () => {
       : tasks;
   }, [searchQuery, tasks]);
 
-  const addTask = useCallback(() => {
-    if (newTaskTitle.trim().length > 0) {
-      const newTask = {
-        // id: "task-" + (tasks.length + 1),
-        // id: uuidv4() ?? Date.now().toString(),
-        // вместо crypto можно использовать библиотеку uuid и ее метод v4()
-        // для генерации Guid
-        id: crypto.randomUUID(),
-        //  ?? Date.now().toString(),
-        // не сработал метод глобальный объект крипто в яндекс браузере
-        // нужно попробовать в другом, и почитать вообще про него
-        // так, как-то получилось, что он сработал, почему то )
-        // и опять, что-то не работает с crypto, он генерирует одинаковый id при одинаковом
-        // наименовании задачи
-        // поэтому вернулся к библиотеке uuid
+  const addTask = useCallback((title) => {
+    const newTask = {
+      // id: "task-" + (tasks.length + 1),
+      // id: uuidv4() ?? Date.now().toString(),
+      // вместо crypto можно использовать библиотеку uuid и ее метод v4()
+      // для генерации Guid
+      id: crypto.randomUUID(),
+      //  ?? Date.now().toString(),
+      // не сработал метод глобальный объект крипто в яндекс браузере
+      // нужно попробовать в другом, и почитать вообще про него
+      // так, как-то получилось, что он сработал, почему то )
+      // и опять, что-то не работает с crypto, он генерирует одинаковый id при одинаковом
+      // наименовании задачи
+      // поэтому вернулся к библиотеке uuid
 
-        //  все заработало, ошибка оказалось в другом месте
-        title: newTaskTitle,
-        isDone: false,
-      };
-      setTasks((prevTasks) => [...prevTasks, newTask]);
-      setNewTaskTitle("");
-      setSearchQuery("");
-      newTaskInputRef.current?.focus();
-    }
-  }, [newTaskTitle]);
+      //  все заработало, ошибка оказалось в другом месте
+      title,
+      isDone: false,
+    };
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+    setNewTaskTitle("");
+    setSearchQuery("");
+    newTaskInputRef.current?.focus();
+  }, []);
 
   return {
     tasks,
