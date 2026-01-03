@@ -14,7 +14,7 @@ const AddTaskForm = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    if (isNewTaskTitleEmpty) {
+    if (!isNewTaskTitleEmpty) {
       addTask(clearNewTaskTitle);
     }
   };
