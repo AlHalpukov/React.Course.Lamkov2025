@@ -1,5 +1,6 @@
 import { memo, useContext } from "react";
 import { TasksContext } from "../context/TasksContext";
+import RouterLink from "./RouterLink";
 
 const TodoItem = (props) => {
   const { className = "", id, children, isDone } = props;
@@ -23,9 +24,12 @@ const TodoItem = (props) => {
         checked={isDone}
         onChange={(event) => toggleTaskComplete(id, event.target.checked)}
       />
-      <label className="todo-item__label" htmlFor={id}>
+      <label className="todo-item__label visually-hidden" htmlFor={id}>
         {children}
       </label>
+      <RouterLink to={`tasks/${id}`} aria-label="Task Detail Page">
+        {children}
+      </RouterLink>
       <button
         className="todo-item__delete-button"
         aria-label="Delete"

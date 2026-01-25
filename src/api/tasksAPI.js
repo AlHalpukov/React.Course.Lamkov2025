@@ -9,6 +9,10 @@ const tasksAPI = {
     return fetch(url + "tasks").then((response) => response.json());
   },
 
+  getById: (id) => {
+    return fetch(url + "tasks/" + id).then((response) => response.json());
+  },
+
   add: (task) => {
     return fetch(url + "tasks", {
       method: "POST",
